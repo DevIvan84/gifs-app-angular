@@ -35,7 +35,7 @@ export class GifsService {
       this._tagsHistory = this._tagsHistory.filter( (oldTag) => oldTag !== tag);
     }
 
-    //poner primero los recientes
+    //poner primero el tag reciente
     this._tagsHistory.unshift(tag);
     this._tagsHistory = this.tagsHistory.splice(0,10);
     this.saveLocalStorage();
@@ -43,16 +43,20 @@ export class GifsService {
 
   //guardar en LocalStorage
   private saveLocalStorage() :void {
+    //guarda los tags history en string con local storage
     localStorage.setItem('history', JSON.stringify(this._tagsHistory));
 
   }
 
   //recuperar del LocalStorage
   private loadLocalStorage() {
+    //si no hay nada cargada en el history tags no se invoca el local storage
     if( !localStorage.getItem('history') ) return;
+
 
     this._tagsHistory = JSON.parse(localStorage.getItem('history')!);
 
+    //se invoca metodo de busqueda de tag para cargar solo el primer tag del history
     if(this._tagsHistory.length === 0 ) return;
       this.searchTag( this._tagsHistory[0] );
 
